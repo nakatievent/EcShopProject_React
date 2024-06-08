@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  react:
+    container_name: "react-app"
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+    - type: bind
+      source: ./
+      target: /usr/src/app
+    command: yarn start
+    ports:
+      - "3000:3000"
