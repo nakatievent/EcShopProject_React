@@ -3,10 +3,12 @@ import { SxProps }   from '@mui/system';
 import Button        from '@mui/material/Button';
 
 type Props = {
-  type?     : 'submit'
+  type?     :
+  'submit'
   |'button'
   |'reset'
-  variant?  : 'text'
+  variant?  :
+  'text'
   |'outlined'
   |'contained'
   fullWidth?: boolean
