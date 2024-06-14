@@ -1,15 +1,5 @@
 import React, { FC } from 'react'
 
-import { Input } from '@mui/material'
-import { InputLabel } from '@mui/material'
-import { FormHelperText } from '@mui/material'
-import { FormControl } from '@mui/base/FormControl'
-
-import { CustomButton } from '../components/atom/Button'
-import { CustomTextField } from '../components/atom/TextField'
-import { CustomTypography } from '../components/atom/Typography'
-import { BaseLayout } from '../components/layout/BaseLayout'
-
 export const Register: FC = () => {
 	return (
 		<>
