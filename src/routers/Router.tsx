@@ -7,7 +7,6 @@ import { ProductDetail } from 'pages/ProductDetail'
 import { Register } from 'pages/Register'
 import { Cart } from 'pages/Cart'
 
-
 export const Router = createBrowserRouter([
 	{
 		path: 'login',
@@ -28,10 +27,12 @@ export const Router = createBrowserRouter([
 	{
 		path: '/register',
 		element: <Register />
-	}, {
+	},
+	{
 		path: '/cart',
 		element: <Cart />
-	}, {
+	},
+	{
 		//   path: '/sign-up',
 		//   element: <SignUp />
 		// }, {

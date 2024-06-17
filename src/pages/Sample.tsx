@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import React, { memo } from 'react'
 import { api } from 'lib/appClient'
 import { useQuery } from '@tanstack/react-query'
 

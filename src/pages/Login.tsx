@@ -1,14 +1,16 @@
-import { FC, useState } from 'react'
+import React, { FC, useState, useContext } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { AxiosError } from 'axios';
-import { Navigate } from 'react-router-dom';
+import axios, { AxiosError } from 'axios'
+import { Navigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import { InputLoginForm } from 'types/User';
-import * as api from "api/AuthApi"
+import { InputLoginForm } from 'types/User'
+import * as api from 'api/AuthApi'
+import { useAuth } from 'hooks/AuthContext'
 
 export const Login: FC = () => {
+	const { isAuth, setIsAuth } = useAuth()
 	const [navigate, setNavigate] = useState<boolean>(false)
-	const [errorMessage, setErrorMessage] = useState<string>("")
+	const [errorMessage, setErrorMessage] = useState<string>('')
 	const { register, handleSubmit, formState: { errors } } = useForm<InputLoginForm>()
 
 	const mutation = useMutation({
@@ -18,6 +20,7 @@ export const Login: FC = () => {
 		},
 		onSuccess: (data) => {
 			if (data.success) {
+				setIsAuth(true)
 				setNavigate(true)
 			} else {
 				setErrorMessage(data.message)
@@ -26,8 +29,13 @@ export const Login: FC = () => {
 	})
 
 	const onSubmit: SubmitHandler<InputLoginForm> = async (sendData: InputLoginForm) => {
-		api.getCsrfToken
-		mutation.mutate(sendData)
+		await api.getCsrfToken().then(response => {
+			api.getUser().then(response => {
+				console.log(response)
+			})
+		})
+		// console.log(test)
+		await mutation.mutate(sendData)
 	}
 
 	if (navigate) {
@@ -43,14 +51,12 @@ export const Login: FC = () => {
 						src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
 						alt="Your Company"
 					/>
-					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-						ログイン
-					</h2>
+					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">ログイン</h2>
 				</div>
 
 				<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 					<form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit(onSubmit)}>
-						{errorMessage && <span className='text-red-500 text-sm text-center'>{errorMessage}</span>}
+						{errorMessage && <span className="text-red-500 text-sm text-center">{errorMessage}</span>}
 						<div>
 							<label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
 								メールアドレス
@@ -72,10 +78,10 @@ export const Login: FC = () => {
 										minLength: {
 											value: 8,
 											message: '最小8文字です'
-										},
+										}
 									})}
 								/>
-								{errors.email && <span className='text-red-500 text-sm'>{errors.email.message}</span>}
+								{errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
 							</div>
 						</div>
 
@@ -106,10 +112,10 @@ export const Login: FC = () => {
 										minLength: {
 											value: 8,
 											message: '最小8文字です'
-										},
+										}
 									})}
 								/>
-								{errors.password && <span className='text-red-500 text-sm'>{errors.password.message}</span>}
+								{errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
 							</div>
 						</div>
 

@@ -4,12 +4,15 @@ import { Router } from 'routers/Router'
 import './App.css'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from 'lib/reactQuery'
+import { AuthProvider } from 'hooks/AuthContext'
 
 const App: FC = () => {
 	return (
-		<QueryClientProvider client={queryClient}>
-			<RouterProvider router={Router} />
-		</QueryClientProvider>
+		<AuthProvider>
+			<QueryClientProvider client={queryClient}>
+				<RouterProvider router={Router} />
+			</QueryClientProvider>
+		</AuthProvider>
 	)
 }
 

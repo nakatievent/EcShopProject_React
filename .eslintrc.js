@@ -1,7 +1,7 @@
 // module.exports = {
 //   env: {
 //     browser: true,
-//     es2021: true,
+//     es2022: true,
 //   },
 //   extends: [
 //     'plugin:react/recommended',
@@ -14,7 +14,7 @@
 //     ecmaFeatures: {
 //       jsx: true,
 //     },
-//     ecmaVersion: 12,
+//     ecmaVersion: 13,
 //     sourceType: 'module',
 //     tsconfigRootDir: __dirname,
 //     project: ['./tsconfig.json'],

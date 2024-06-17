@@ -1,4 +1,4 @@
-type User = {
+type ResponseUser = {
 	email: string
 	password: string
 }
@@ -13,4 +13,4 @@ type InputLoginForm = {
 	password: string
 }
 
-export type { User, ResponseJson, InputLoginForm }
+export type { ResponseUser, ResponseJson, InputLoginForm }
