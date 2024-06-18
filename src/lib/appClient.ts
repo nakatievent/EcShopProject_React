@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 export const api = axios.create({
-	baseURL: 'http://localhost:8000',
+	baseURL: process.env.REACT_APP_API_URL,
 	headers: {
-		'Accept': 'application/json'
+		Accept: 'application/json'
 	},
 	withCredentials: true,
 	withXSRFToken: true
