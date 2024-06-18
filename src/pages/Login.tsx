@@ -1,6 +1,6 @@
-import React, { FC, useState, useContext } from 'react'
+import React, { FC, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { Navigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { InputLoginForm } from 'types/User'
@@ -29,13 +29,9 @@ export const Login: FC = () => {
 	})
 
 	const onSubmit: SubmitHandler<InputLoginForm> = async (sendData: InputLoginForm) => {
-		await api.getCsrfToken().then(response => {
-			api.getUser().then(response => {
-				console.log(response)
-			})
+		await api.getCsrfToken().then((response) => {
+			mutation.mutate(sendData)
 		})
-		// console.log(test)
-		await mutation.mutate(sendData)
 	}
 
 	if (navigate) {
