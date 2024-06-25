@@ -6,8 +6,8 @@ const getAllProducts = async () => {
 	return data
 }
 
-const getProductDetail = async () => {
-	const { data } = await api.get<ResponseUser>('/api/user')
+const getProductDetail = async (productId: number) => {
+	const { data } = await api.get(`/api/products/detail/${productId}`)
 	return data
 }
 
