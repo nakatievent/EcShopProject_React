@@ -1,8 +1,7 @@
 import React, { FC } from 'react'
-import * as api from 'api/ProductApi'
-import { useAuth } from 'hooks/AuthContext'
 import { Header } from 'components/organisms/Header'
 import { ProductList } from 'components/organisms/ProductList'
+import { CategoryList } from 'components/organisms/CategoryList'
 
 // const logoStyle = {
 // 	width: '140px',
@@ -80,6 +79,7 @@ const products = [
 ]
 
 export const Main: FC = () => {
+	
 	return (
 		<>
 			<div className="min-h-full">
@@ -113,25 +113,11 @@ export const Main: FC = () => {
 						</div>
 					</div>
 
-					<div className="grid sm:grid-rows-3 sm:grid-flow-col gap-4 p-2">
-						<div className="w-80 row-span-3 col-span-3 sm:col-span-1">
-							<div className="p-8 rounded-lg">
-								<h1 className="text-2xl font-bold mb-4">カテゴリーリスト</h1>
-								<ul className="space-y-2">
-									<hr className="border-gray-300"></hr>
-									<li className="text-lg text-gray-700">リスト項目1</li>
-									<hr className="border-gray-300"></hr>
-									<li className="text-lg text-gray-700">リスト項目2</li>
-									<hr className="border-gray-300"></hr>
-									<li className="text-lg text-gray-700">リスト項目3</li>
-									<hr className="border-gray-300"></hr>
-									<li className="text-lg text-gray-700">リスト項目4</li>
-									<hr className="border-gray-300"></hr>
-								</ul>
-							</div>
+					<div className="w-4/5 mx-auto">
+						<div className="grid sm:grid-rows-3 sm:grid-flow-col gap-4 xl:m-10">
+							<CategoryList />
+							<ProductList />
 						</div>
-
-						<ProductList />
 					</div>
 				</main>
 			</div>
