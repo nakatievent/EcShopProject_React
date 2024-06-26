@@ -6,6 +6,9 @@ import { MyPage } from 'pages/MyPage'
 import { ProductDetail } from 'pages/ProductDetail'
 import { Register } from 'pages/Register'
 import { Cart } from 'pages/Cart'
+import { CategoryProduct } from 'pages/CategoryProduct'
+import { Payment } from 'pages/Payment'
+import { InputAdress } from 'pages/InputAdress'
 
 export const Router = createBrowserRouter([
 	{
@@ -33,10 +36,15 @@ export const Router = createBrowserRouter([
 		element: <Cart />
 	},
 	{
-		//   path: '/sign-up',
-		//   element: <SignUp />
-		// }, {
-		//   path: '/top',
-		//   element: <Top />
+		path: '/category-product/:categoryId',
+		element: <CategoryProduct />
+	},
+	{
+		path: '/payment/',
+		element: <Payment />
+	},
+	{
+		path: '/input-adress/',
+		element: <InputAdress />
 	}
 ])
