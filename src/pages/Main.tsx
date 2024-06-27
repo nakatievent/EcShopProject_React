@@ -20,76 +20,12 @@ import { CategoryList } from 'components/organisms/CategoryList'
 // 	{ href: '#', ariaLabel: 'LinkedIn', icon: <LinkedInIcon /> }
 // ]
 
-const products = [
-	{
-		id: 1,
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black'
-	},
-	{
-		id: 1,
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black'
-	},
-	{
-		id: 1,
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black'
-	},
-	{
-		id: 1,
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black'
-	},
-	{
-		id: 1,
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black'
-	},
-	{
-		id: 1,
-		name: 'Basic Tee',
-		href: '#',
-		imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-		imageAlt: "Front of men's Basic Tee in black.",
-		price: '$35',
-		color: 'Black'
-	}
-	// More products...
-]
-
 export const Main: FC = () => {
-	
 	return (
 		<>
 			<div className="min-h-full">
 				<Header />
 
-				<header className="bg-white shadow">
-					<div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-						<h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-					</div>
-				</header>
 				<main>
 					<div className="relative overflow-hidden bg-white">
 						<div className="pb-16 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
