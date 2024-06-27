@@ -9,6 +9,8 @@ import { Cart } from 'pages/Cart'
 import { CategoryProduct } from 'pages/CategoryProduct'
 import { Payment } from 'pages/Payment'
 import { InputAdress } from 'pages/InputAdress'
+import { Sample } from 'pages/Sample'
+import { PaymentComplite } from 'pages/PaymentComplite'
 
 export const Router = createBrowserRouter([
 	{
@@ -40,11 +42,19 @@ export const Router = createBrowserRouter([
 		element: <CategoryProduct />
 	},
 	{
-		path: '/payment/',
+		path: '/payment',
 		element: <Payment />
 	},
 	{
-		path: '/input-adress/',
+		path: '/input-adress',
 		element: <InputAdress />
-	}
+	},
+	{
+		path: '/payment-complite',
+		element: <PaymentComplite />
+	},
+	{
+		path: '/sample',
+		element: <Sample />
+	},
 ])
