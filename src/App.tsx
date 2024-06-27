@@ -5,13 +5,16 @@ import './App.css'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from 'lib/reactQuery'
 import { AuthProvider } from 'hooks/AuthContext'
+import { CartProvider } from 'hooks/CartContext'
 
 const App: FC = () => {
 	return (
 		<AuthProvider>
-			<QueryClientProvider client={queryClient}>
-				<RouterProvider router={Router} />
-			</QueryClientProvider>
+			<CartProvider>
+				<QueryClientProvider client={queryClient}>
+					<RouterProvider router={Router} />
+				</QueryClientProvider>
+			</CartProvider>
 		</AuthProvider>
 	)
 }
