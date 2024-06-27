@@ -6,7 +6,7 @@ export default function CheckoutForm() {
 	const stripe = useStripe()
 	const elements = useElements()
 
-	const [message, setMessage] = useState<string | null | undefined>(null)
+	const [message, setMessage] = useState<string|null|undefined>(null)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	useEffect(() => {
@@ -14,10 +14,8 @@ export default function CheckoutForm() {
 			return
 		}
 
-		// console.log(22222)
-
 		const clientSecret = new URLSearchParams(window.location.search).get('payment_intent_client_secret')
-
+		
 		if (!clientSecret) {
 			return
 		}
@@ -52,7 +50,7 @@ export default function CheckoutForm() {
 		const { error } = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
-				return_url: 'http://localhost:3000'
+				return_url: 'http://localhost:3000/payment-complite'
 			}
 		})
 
@@ -73,7 +71,7 @@ export default function CheckoutForm() {
 		<form id="payment-form" onSubmit={handleSubmit} style={styles.form}>
 			<PaymentElement id="payment-element" options={paymentElementOptions} />
 			<button disabled={isLoading || !stripe || !elements} id="submit" style={styles.button}>
-				<span id="button-text">{isLoading ? <div className="spinner" id="spinner"></div> : 'Pay now'}</span>
+				<span id="button-text">{isLoading ? <div className="spinner" id="spinner"></div> : '決済を行う'}</span>
 			</button>
 			{message && <div id="payment-message">{message}</div>}
 		</form>
