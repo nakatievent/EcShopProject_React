@@ -7,7 +7,7 @@ export const useFetchProductDetail = () => {
 
 	const { data, error, isError, isLoading, isFetched } = useQuery({
 		queryKey: ['productId', Number(productId)],
-		queryFn: () => api.getProductDetail(Number(productId))
+		queryFn: () => api.getProductDetail(Number(productId)).then((response) => response.data)
 	})
 
 	return { data, error, isError, isLoading, isFetched }
