@@ -1,9 +1,10 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Radio, RadioGroup } from '@headlessui/react'
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom'
 import * as api from 'api/ProductApi'
 import { useQuery, useMutation } from '@tanstack/react-query'
+import { useFetchProductDetail } from 'hooks/useFetchProductDetail'
 
 const product = {
 	name: 'Basic Tee 6-Pack',
@@ -19,11 +20,11 @@ const product = {
 			alt: 'Two each of gray, white, and black shirts laying flat.'
 		},
 		{
-			src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
+			src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
 			alt: 'Model wearing plain black basic tee.'
 		},
 		{
-			src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
+			src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
 			alt: 'Model wearing plain gray basic tee.'
 		},
 		{
@@ -59,276 +60,99 @@ const product = {
 }
 const reviews = { href: '#', average: 4, totalCount: 117 }
 
-function classNames(...classes: string[]) {
-	return classes.filter(Boolean).join(' ')
-}
-
 export const ProductDetail: FC = () => {
-	const { productId } = useParams<{ productId: string }>();
+	const [count, setCount] = useState<number>(0)
+	const { data, error, isError, isLoading, isFetched } = useFetchProductDetail()
 
-	const [selectedColor, setSelectedColor] = useState(product.colors[0])
-	const [selectedSize, setSelectedSize]   = useState(product.sizes[2])
-	
-	const { isPending, error, data } = useQuery({
-    queryKey: ['productsDetail'],
-    queryFn: () =>
-      api.getProductDetail(Number(productId))
-  })
-
-	if (isPending) {
+	if (isLoading) {
+		console.log(isLoading)
 		return <span>Loading...</span>
 	}
 
 	if (error) {
 		return <span>Error: {error.message}</span>
 	}
-	
-	console.log(data)
-	
+
+	if (isFetched) {
+		console.log(data)
+	}
+
 	// const product = data.data
 
 	return (
-		<div className="bg-white">
-			<div className="pt-6">
-				<nav aria-label="Breadcrumb">
-					<ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-						{product.breadcrumbs.map((breadcrumb) => (
-							<li key={breadcrumb.id}>
-								<div className="flex items-center">
-									<a href={breadcrumb.href} className="mr-2 text-sm font-medium text-gray-900">
-										{breadcrumb.name}
-									</a>
-									<svg
-										width={16}
-										height={20}
-										viewBox="0 0 16 20"
-										fill="currentColor"
-										aria-hidden="true"
-										className="h-5 w-4 text-gray-300"
-									>
-										<path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-									</svg>
-								</div>
-							</li>
-						))}
-						<li className="text-sm">
-							<a href={data.data.href} aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
-								{data.data.name}
-							</a>
-						</li>
-					</ol>
-				</nav>
-
-				{/* Image gallery */}
-				<div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-					<div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-						<img
-							src={product.images[0].src}
-							alt={product.images[0].alt}
-							className="h-full w-full object-cover object-center"
-						/>
-					</div>
-					<div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-						<div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-							<img
-								src={product.images[1].src}
-								alt={product.images[1].alt}
-								className="h-full w-full object-cover object-center"
-							/>
-						</div>
-						<div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-							<img
-								src={product.images[2].src}
-								alt={product.images[2].alt}
-								className="h-full w-full object-cover object-center"
-							/>
-						</div>
-					</div>
-					<div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-						<img
-							src={product.images[3].src}
-							alt={product.images[3].alt}
-							className="h-full w-full object-cover object-center"
-						/>
-					</div>
-				</div>
-
-				{/* Product info */}
-				<div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-					<div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-						<h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{data.data.name}</h1>
-					</div>
-
-					{/* Options */}
-					<div className="mt-4 lg:row-span-3 lg:mt-0">
-						<h2 className="sr-only">Product information</h2>
-						<p className="text-3xl tracking-tight text-gray-900">{data.data.price}円</p>
-
-						{/* Reviews */}
-						<div className="mt-6">
-							<h3 className="sr-only">Reviews</h3>
-							<div className="flex items-center">
-								<div className="flex items-center">
-									{[0, 1, 2, 3, 4].map((rating) => (
-										<StarIcon
-											key={rating}
-											className={classNames(
-												reviews.average > rating ? 'text-gray-900' : 'text-gray-200',
-												'h-5 w-5 flex-shrink-0'
-											)}
-											aria-hidden="true"
+		<>
+			<div className="min-h-full p-4 md:p-0">
+				<div className="mx-auto max-w-7xl lg:px-8">
+					<div className="flex flex-col lg:flex-row">
+						<div className="w-full lg:w-1/2">
+							<div className="flex flex-col">
+								<img className="w-full object-cover" src={product.images[0].src} alt="Main Product Image" />
+								<div className="grid grid-cols-3 gap-4 mt-6">
+									{product.images.slice(1).map((image, index) => (
+										<img
+											key={index}
+											src={image.src}
+											alt={`Additional Product Image ${index + 1}`}
+											className="w-full object-cover"
 										/>
 									))}
 								</div>
-								<p className="sr-only">{reviews.average} out of 5 stars</p>
-								<a href={reviews.href} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
-									{reviews.totalCount} reviews
-								</a>
 							</div>
 						</div>
-
-						<form className="mt-10">
-							{/* Colors */}
-							<div>
-								<h3 className="text-sm font-medium text-gray-900">Color</h3>
-
-								<fieldset aria-label="Choose a color" className="mt-4">
-									<RadioGroup value={selectedColor} onChange={setSelectedColor} className="flex items-center space-x-3">
-										{product.colors.map((color) => (
-											<Radio
-												key={color.name}
-												value={color}
-												aria-label={color.name}
-												className={({ focus, checked }) =>
-													classNames(
-														color.selectedClass,
-														focus && checked ? 'ring ring-offset-1' : '',
-														!focus && checked ? 'ring-2' : '',
-														'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-													)
-												}
-											>
-												<span
-													aria-hidden="true"
-													className={classNames(
-														color.class,
-														'h-8 w-8 rounded-full border border-black border-opacity-10'
-													)}
-												/>
-											</Radio>
-										))}
-									</RadioGroup>
-								</fieldset>
-							</div>
-
-							{/* Sizes */}
-							<div className="mt-10">
-								<div className="flex items-center justify-between">
-									<h3 className="text-sm font-medium text-gray-900">Size</h3>
-									<a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-										Size guide
-									</a>
-								</div>
-
-								<fieldset aria-label="Choose a size" className="mt-4">
-									<RadioGroup
-										value={selectedSize}
-										onChange={setSelectedSize}
-										className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4"
-									>
-										{product.sizes.map((size) => (
-											<Radio
-												key={size.name}
-												value={size}
-												disabled={!size.inStock}
-												className={({ focus }) =>
-													classNames(
-														size.inStock
-															? 'cursor-pointer bg-white text-gray-900 shadow-sm'
-															: 'cursor-not-allowed bg-gray-50 text-gray-200',
-														focus ? 'ring-2 ring-indigo-500' : '',
-														'group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6'
-													)
-												}
-											>
-												{({ checked, focus }) => (
-													<>
-														<span>{size.name}</span>
-														{size.inStock ? (
-															<span
-																className={classNames(
-																	checked ? 'border-indigo-500' : 'border-transparent',
-																	focus ? 'border' : 'border-2',
-																	'pointer-events-none absolute -inset-px rounded-md'
-																)}
-																aria-hidden="true"
-															/>
-														) : (
-															<span
-																aria-hidden="true"
-																className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"
-															>
-																<svg
-																	className="absolute inset-0 h-full w-full stroke-2 text-gray-200"
-																	viewBox="0 0 100 100"
-																	preserveAspectRatio="none"
-																	stroke="currentColor"
-																>
-																	<line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
-																</svg>
-															</span>
-														)}
-													</>
-												)}
-											</Radio>
-										))}
-									</RadioGroup>
-								</fieldset>
-							</div>
-
-							<button
-								type="submit"
-								className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-							>
-								Add to bag
-							</button>
-						</form>
-					</div>
-
-					<div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-						{/* Description and details */}
-						<div>
-							<h3 className="sr-only">Description</h3>
-
-							<div className="space-y-6">
-								<p className="text-base text-gray-900">{data.data.description}</p>
-							</div>
-						</div>
-
-						<div className="mt-10">
-							<h3 className="text-sm font-medium text-gray-900">Highlights</h3>
-
-							<div className="mt-4">
-								<ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-									{product.highlights.map((highlight) => (
-										<li key={highlight} className="text-gray-400">
-											<span className="text-gray-600">{highlight}</span>
-										</li>
+						<div className="w-full lg:w-1/2 lg:pl-10 lg:py-10">
+							<h2 className="text-2xl font-semibold">
+								{data.data.name && data.data.name ? data.data.name : '名前なし'}
+							</h2>
+							{data.data.category && (
+								<div className="flex mt-2">
+									{data.data.category.map((category: any, index: number) => (
+										<p key={index} className="text-gray-500 mr-3">
+											{category.name}
+										</p>
 									))}
-								</ul>
+								</div>
+							)}
+							<div className="flex items-center mt-2 text-sm text-gray-500">
+								<span>評価: ★★★★☆</span>
+								<span className="ml-2">お気に入り: 100人</span>
 							</div>
-						</div>
-
-						<div className="mt-10">
-							<h2 className="text-sm font-medium text-gray-900">商品の詳細</h2>
-
-							<div className="mt-4 space-y-6">
-								<p className="text-sm text-gray-600">{data.data.detail}</p>
+							<p className="font-bold mt-2 text-gray-500">金額: {data.data.price}円</p>
+							<p className="text-gray-500 mt-2">送料無料</p>
+							<input
+								type="number"
+								className="border border-gray-300 p-2 mt-2 w-full"
+								placeholder="数量"
+								onChange={(e) => setCount(Number(e.target.value))}
+							/>
+							<button className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 w-full">カートに入れる</button>
+							<button className="border border-gray-500 text-gray-500 px-4 py-2 rounded-md mt-4 w-full">
+								お気に入りに登録
+							</button>
+							<p className="text-gray-500 mt-4">在庫あり</p>
+							<div>
+								<h3 className="mt-5 text-md font-bold tracking-tight text-gray-900 sm:text-lg">商品説明</h3>
+								<div className="mt-3 space-y-6 bg-gray-100 p-4 rounded-md">
+									<p className="text-base text-gray-900">{data.data.description}</p>
+								</div>
+							</div>
+							<div>
+								<h3 className="mt-5 text-md font-bold tracking-tight text-gray-900 sm:text-lg">商品詳細</h3>
+								<div className="mt-3 space-y-6 bg-gray-100 p-4 rounded-md">
+									<p className="text-base text-gray-900">{data.data.detail}</p>
+								</div>
+							</div>
+							<div className="related-items mt-8">
+								<h3 className="text-lg font-semibold text-gray-500 mb-4">関連アイテム</h3>
+								<div className="space-y-2">
+									<div className="border p-2 rounded">関連商品1</div>
+									<div className="border p-2 rounded">関連商品2</div>
+									<div className="border p-2 rounded">関連商品3</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	)
 }
