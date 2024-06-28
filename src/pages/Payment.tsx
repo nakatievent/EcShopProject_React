@@ -1,11 +1,19 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "components/organisms/CheckoutForm";
 import { usePaymentIntent } from "hooks/useCreatePaymentIntent";
+import { CartContext } from 'hooks/CartContext';
 
 export const Payment: FC = () => {
-  const aaa: number = 200 // TODO: 後から動的に取得する
-  const { clientSecret, error, isLoading, appearance, options, stripePromise } = usePaymentIntent(aaa)
+  const cartContext = useContext(CartContext);
+	
+	if (!cartContext) {
+		throw new Error('CartContext not found');
+	}
+
+	const { cartTotal } = cartContext;
+
+  const { clientSecret, error, isLoading, appearance, options, stripePromise } = usePaymentIntent(cartTotal)
 
   return (
     <div className="App">
