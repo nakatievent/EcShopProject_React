@@ -143,10 +143,15 @@ export const InputAdress: FC = () => {
 				<div className="col-span-1 mb-10 sm:pl-8">
 					<div className="mt-6">
 						<div className="border p-4">
-							<div className="text-lg font-bold">合計</div>
-							<div className="text-2xl font-bold text-gray-800">4273円</div>
-							<div className="text-sm text-gray-500">送料 500円</div>
-							<button type="submit" className="mt-4 w-full bg-slate-900 text-white py-2 rounded-md">
+							<div className="flex justify-between items-center mb-1">
+								<div className="text-lg font-bold">合計</div>
+								<div className="text-2xl font-bold">4273円</div>
+							</div>
+							<div className="flex justify-between items-center mb-5">
+								<div className="text-md text-gray-500">送料</div>
+								<div className="text-md text-gray-500">500円</div>
+							</div>
+							<button type="submit" className="w-full bg-slate-900 text-white py-2 rounded-md">
 								注文内容を確認する
 							</button>
 						</div>
