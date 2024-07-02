@@ -5,15 +5,16 @@ interface Product {
   id: number;
   name: string;
   price: number;
+  count?: number;
 }
 
 interface CartContextType {
   cart: Product[];
   addToCart: (product: Product) => void;
   removeFromCart: (productId: number) => void;
+  updateQuantity: (productId: number, newQuantity: number) => void;
   clearCart: () => void;
   cartTotal: number;
-  fixCartData: Array<Product|unknown>;
 }
 
 export const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -24,7 +25,7 @@ interface CartProviderProps {
 
 export const CartProvider: FC<CartProviderProps> = ({ children }) => {
   const [cart, setCart] = useState<Array<Product>>(loadCartFromLocalStorage());
-  
+
   useEffect(() => {
     saveCartToLocalStorage(cart);
   }, [cart]);
@@ -39,30 +40,25 @@ export const CartProvider: FC<CartProviderProps> = ({ children }) => {
     setCart(cart.filter(item => item.id !== productId));
   };
 
+  // 個数を更新
+  const updateQuantity = (productId: number, newQuantity: number) => {
+    const updatedCart = cart.map(item =>
+      item.id === productId ? { ...item, count: newQuantity } : item
+    );
+
+    setCart(updatedCart);
+  };
+  
   // カートを空にする
   const clearCart = () => {
     setCart([]);
   };
-
-  // カートの合計金額
-  const cartTotal = cart.reduce((total, item) => total + item.price, 0);
   
-  // カート内の同じ商品をグルーピング
-  const groupByCartData = cart.reduce((previousValue: any, currentValue: any) => {
-    if (!previousValue[currentValue.name]) {
-      previousValue[currentValue.name] = { ...currentValue, count: 1 }
-    } else {
-      previousValue[currentValue.name].price += currentValue.price
-      previousValue[currentValue.name].count += 1;
-    }
-    return previousValue
-  }, {})  
-  
-  // グループ化したカートデータを配列に変換
-  const fixCartData = Object.values(groupByCartData);
+  // カートの合計金額（countがない時は初期値として1をセット）
+  const cartTotal = cart.reduce((total, item) => total + (item.price * (item.count || 1)), 0);
   
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, cartTotal, fixCartData }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal }}>
       {children}
     </CartContext.Provider>
   )

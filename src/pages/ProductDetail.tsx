@@ -1,10 +1,8 @@
-import React, { FC, useState, useEffect } from 'react'
-import { StarIcon } from '@heroicons/react/20/solid'
-import { Radio, RadioGroup } from '@headlessui/react'
-import { useParams } from 'react-router-dom'
-import * as api from 'api/ProductApi'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import React, { FC, useState, useEffect, useContext } from 'react'
 import { useFetchProductDetail } from 'hooks/useFetchProductDetail'
+import { Link, useNavigate } from "react-router-dom";
+import { CartContext } from 'hooks/CartContext';
+
 
 const product = {
 	name: 'Basic Tee 6-Pack',
@@ -58,15 +56,22 @@ const product = {
 	details:
 		'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.'
 }
-const reviews = { href: '#', average: 4, totalCount: 117 }
 
 export const ProductDetail: FC = () => {
+	const navigate = useNavigate();
 	const [count, setCount] = useState<number>(0)
 	const { data, error, isError, isLoading, isFetched } = useFetchProductDetail()
+	const cartContext = useContext(CartContext);
+
+	if (!cartContext) {
+		throw new Error('CartContext not found');
+	}
+	
+	const { addToCart } = cartContext;
+	// const { cartTotal } = cartContext;
 
 	if (isLoading) {
-		console.log(isLoading)
-		return <span>Loading...</span>
+		return <span></span>
 	}
 
 	if (error) {
@@ -74,24 +79,31 @@ export const ProductDetail: FC = () => {
 	}
 
 	if (isFetched) {
-		console.log(data)
+		// console.log(data)
 	}
 
-	// const product = data.data
+	const onClickButton = () => {
+		addToCart({
+			id: data.id,
+			name: data.name,
+			price: data.price
+		})
+		navigate("/cart");
+	};
 
 	return (
 		<>
-			<div className="min-h-full p-4 md:p-0">
+			<div className="min-h-full p-4">
 				<div className="mx-auto max-w-7xl lg:px-8">
 					<div className="flex flex-col lg:flex-row">
 						<div className="w-full lg:w-1/2">
 							<div className="flex flex-col">
-								<img className="w-full object-cover" src={product.images[0].src} alt="Main Product Image" />
+								<img className="w-full object-cover" src={data.image[0].image_url} alt="Main Product Image" />
 								<div className="grid grid-cols-3 gap-4 mt-6">
-									{product.images.slice(1).map((image, index) => (
+									{data.image.slice(1).map((image: any, index: number) => (
 										<img
 											key={index}
-											src={image.src}
+											src={image.image_url}
 											alt={`Additional Product Image ${index + 1}`}
 											className="w-full object-cover"
 										/>
@@ -99,24 +111,28 @@ export const ProductDetail: FC = () => {
 								</div>
 							</div>
 						</div>
-						<div className="w-full lg:w-1/2 lg:pl-10 lg:py-10">
+						<div className="w-full py-4 lg:w-1/2 lg:pl-10 lg:py-10">
 							<h2 className="text-2xl font-semibold">
-								{data.data.name && data.data.name ? data.data.name : '名前なし'}
+								{data.name && data.name ? data.name : '名前なし'}
 							</h2>
-							{data.data.category && (
+							{data.category && (
 								<div className="flex mt-2">
-									{data.data.category.map((category: any, index: number) => (
-										<p key={index} className="text-gray-500 mr-3">
+									{data.category.map((category: any, index: number) => (
+										<Link
+											key={index}
+											className="text-gray-500 mr-3"
+											to={`/category-product/${category.id}`}
+										>
 											{category.name}
-										</p>
+										</Link>
 									))}
 								</div>
 							)}
 							<div className="flex items-center mt-2 text-sm text-gray-500">
 								<span>評価: ★★★★☆</span>
-								<span className="ml-2">お気に入り: 100人</span>
+								<span className="ml-2">お気に入り: {data.favorite}人</span>
 							</div>
-							<p className="font-bold mt-2 text-gray-500">金額: {data.data.price}円</p>
+							<p className="font-bold mt-2 text-gray-500">金額: {data.price.toLocaleString()}円</p>
 							<p className="text-gray-500 mt-2">送料無料</p>
 							<input
 								type="number"
@@ -124,7 +140,15 @@ export const ProductDetail: FC = () => {
 								placeholder="数量"
 								onChange={(e) => setCount(Number(e.target.value))}
 							/>
-							<button className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 w-full">カートに入れる</button>
+							{/* <button className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 w-full">カートに入れる</button> */}
+							<button
+								className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 w-full"
+								// onClick={onClickButton}
+								onClick={onClickButton}
+							>
+								カートに入れる
+							</button>
+							{/* <button onClick={() => addToCart(product)}>Add to Cart</button> */}
 							<button className="border border-gray-500 text-gray-500 px-4 py-2 rounded-md mt-4 w-full">
 								お気に入りに登録
 							</button>
@@ -132,21 +156,29 @@ export const ProductDetail: FC = () => {
 							<div>
 								<h3 className="mt-5 text-md font-bold tracking-tight text-gray-900 sm:text-lg">商品説明</h3>
 								<div className="mt-3 space-y-6 bg-gray-100 p-4 rounded-md">
-									<p className="text-base text-gray-900">{data.data.description}</p>
+									<p className="text-base text-gray-900">{data.description}</p>
 								</div>
 							</div>
 							<div>
 								<h3 className="mt-5 text-md font-bold tracking-tight text-gray-900 sm:text-lg">商品詳細</h3>
 								<div className="mt-3 space-y-6 bg-gray-100 p-4 rounded-md">
-									<p className="text-base text-gray-900">{data.data.detail}</p>
+									<p className="text-base text-gray-900">{data.detail}</p>
 								</div>
 							</div>
-							<div className="related-items mt-8">
+							{/* <div className="related-items mt-8">
 								<h3 className="text-lg font-semibold text-gray-500 mb-4">関連アイテム</h3>
 								<div className="space-y-2">
 									<div className="border p-2 rounded">関連商品1</div>
 									<div className="border p-2 rounded">関連商品2</div>
 									<div className="border p-2 rounded">関連商品3</div>
+								</div>
+							</div> */}
+							<div className="related-items mt-8">
+								<h3 className="text-lg font-semibold text-gray-500 mb-4">レビュー</h3>
+								<div className="space-y-2">
+									{data.review && data.review.map((review: any, index: number) => (
+										<div key={index} className="border p-2 rounded">{review.comment}</div>
+									))}
 								</div>
 							</div>
 						</div>

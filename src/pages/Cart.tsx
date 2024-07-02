@@ -4,29 +4,17 @@ import { CartContext } from 'hooks/CartContext';
 
 export const Cart: FC = () => {
 	const navigate = useNavigate()
-	const [open, setOpen] = useState<boolean>(true)
-	const [number, setNumber] = useState(0);
-
-
 	const cartContext = useContext(CartContext)
 
 	if (!cartContext) {
 		throw new Error('CartContext not found')
 	}
-	
-	const { cart, addToCart, removeFromCart, clearCart, cartTotal, fixCartData } = cartContext;
 
-	console.log(fixCartData)
+	const { cart, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal } = cartContext;
 
 	const onClickButton = (destination: string) => {
 		navigate(destination);
 	};
-	
-	const handleInputChange = (event: any) => {
-		console.log()
-		addToCart(event.target.value)
-    // 実行したい関数の内容をここに追加
-  };
 
 	return (
 		<div className="mx-auto w-11/12 mt-10">
@@ -35,20 +23,21 @@ export const Cart: FC = () => {
 				<div className="w-full lg:w-2/3 p-4">
 					<h2 className="text-2xl font-bold mb-6">カート</h2>
 					{/* TODO: fixCartDataは配列 */}
-					{fixCartData && fixCartData.map((product: any) => (
+					{cart && cart.map((product: any) => (
 						<div key={product.id} className="flex items-center border-b pb-4 mb-4">
 							<div className="w-24 h-24 bg-gray-200 flex-shrink-0"></div>
 							<div className="ml-4 flex-grow">
 								<h3 className="text-sm font-semibold sm:text-lg">ブランド名</h3>
 								<p className="text-sm text-gray-600 sm:text-lg">{product.name}</p>
-								<p className="text-sm text-gray-800 font-bold sm:text-lg">{product.price}円</p>
+								<p className="text-sm text-gray-800 font-bold sm:text-lg">{product.price * (product.count || 1)}円</p>
 							</div>
 							<div className="flex items-center">
 								<input
 									type="number"
-									value={product.count}
+									value={product.count || 1}
 									className="w-16 p-1 border rounded-md text-center"
-									onChange={handleInputChange}
+									onChange={(e) => updateQuantity(product.id, parseInt(e.target.value))}
+									min="1"
 								></input>
 								<button
 									className="ml-4 text-red-500"
