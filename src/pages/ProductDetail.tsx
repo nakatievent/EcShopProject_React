@@ -140,9 +140,8 @@ export const ProductDetail: FC = () => {
 								placeholder="数量"
 								onChange={(e) => setCount(Number(e.target.value))}
 							/>
-							{/* <button className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 w-full">カートに入れる</button> */}
 							<button
-								className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 w-full"
+								className="border border-gray-500 text-black px-4 py-2 rounded-md mt-4 w-full"
 								// onClick={onClickButton}
 								onClick={onClickButton}
 							>
