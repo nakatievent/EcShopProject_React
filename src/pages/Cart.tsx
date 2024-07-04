@@ -88,7 +88,7 @@ export const Cart: FC = () => {
 					</div>
 					<div className="mb-4">
 						<button
-							className="w-full p-2 bg-slate-900 text-white"
+							className="w-full p-2 bg-white text-black border"
 							onClick={() => onClickButton("/login")}
 						>
 							ログインして注文手続きへ
@@ -96,7 +96,7 @@ export const Cart: FC = () => {
 					</div>
 					<div className="mb-4">
 						<button
-							className="w-full p-2 bg-gray-500 text-white"
+							className="w-full p-2 bg-white text-black border"
 							onClick={() => onClickButton("/register")}
 						>
 							会員登録して注文手続きへ
@@ -116,6 +116,14 @@ export const Cart: FC = () => {
 							onClick={() => onClickButton("/payment")}
 						>
 							そのまま買う
+						</button>
+					</div>
+					<div className="mt-4">
+						<button
+							className="w-full p-2 bg-white text-black border"
+							onClick={() => onClickButton("/")}
+						>
+							お買い物を続ける
 						</button>
 					</div>
 					<div className="mt-4">
