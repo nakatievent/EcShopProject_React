@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { useFetchCategoryProduct } from 'hooks/useFetchCategoryProduct'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 
 const mockData = {
   name: "山田 太郎",
@@ -22,6 +22,8 @@ const mockData = {
 };
 
 export const Confirm: FC = () => {
+  const { state } = useLocation()
+  console.log(state)
 
 	return (
 		<>
