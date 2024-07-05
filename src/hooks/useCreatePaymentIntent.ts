@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import * as api from 'api/PaymentApi'
 import { useQuery } from '@tanstack/react-query'
-import { Stripe, loadStripe, Appearance, StripeElementsOptions } from "@stripe/stripe-js";
+import { Appearance, StripeElementsOptions } from "@stripe/stripe-js";
+import getStripPromise from 'lib/stripeClient';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY!);
+const stripePromise = getStripPromise()
 
 export const usePaymentIntent = (total_price: number) => {
   const [clientSecret, setClientSecret] = useState<string|undefined>();

@@ -4,9 +4,9 @@ import { useQuery } from '@tanstack/react-query'
 import {useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement, Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from "components/organisms/CheckoutForm";
 import { Stripe, loadStripe, Appearance, StripeElementsOptions } from "@stripe/stripe-js";
-import getStripPromise from 'lib/stripeClient';
+import getStripePromise from 'lib/stripeClient';
 
-const stripePromise = getStripPromise()
+const stripePromise = getStripePromise()
 
 export const PaymentForm: FC = () => {
   // const [clientSecret, setClientSecret] = useState<string|undefined>();
