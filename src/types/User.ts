@@ -13,4 +13,13 @@ type InputLoginForm = {
 	password: string
 }
 
-export type { ResponseUser, ResponseJson, InputLoginForm }
+type InputAdressForm = {
+	firstName: string
+	lastName: string
+	postalCode: string
+	phone: string
+	email: string
+	confirmEmail: string
+}
+
+export type { ResponseUser, ResponseJson, InputLoginForm, InputAdressForm }
