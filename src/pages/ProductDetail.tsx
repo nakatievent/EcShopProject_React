@@ -1,8 +1,7 @@
 import React, { FC, useState, useEffect, useContext } from 'react'
 import { useFetchProductDetail } from 'hooks/useFetchProductDetail'
-import { Link, useNavigate } from "react-router-dom";
-import { CartContext } from 'hooks/CartContext';
-
+import { Link, useNavigate } from 'react-router-dom'
+import { CartContext } from 'hooks/CartContext'
 
 const product = {
 	name: 'Basic Tee 6-Pack',
@@ -58,16 +57,16 @@ const product = {
 }
 
 export const ProductDetail: FC = () => {
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 	const [count, setCount] = useState<number>(0)
 	const { data, error, isError, isLoading, isFetched } = useFetchProductDetail()
-	const cartContext = useContext(CartContext);
+	const cartContext = useContext(CartContext)
 
 	if (!cartContext) {
-		throw new Error('CartContext not found');
+		throw new Error('CartContext not found')
 	}
-	
-	const { addToCart } = cartContext;
+
+	const { addToCart } = cartContext
 	// const { cartTotal } = cartContext;
 
 	if (isLoading) {
@@ -88,8 +87,8 @@ export const ProductDetail: FC = () => {
 			name: data.name,
 			price: data.price
 		})
-		navigate("/cart");
-	};
+		navigate('/cart')
+	}
 
 	return (
 		<>
@@ -112,17 +111,11 @@ export const ProductDetail: FC = () => {
 							</div>
 						</div>
 						<div className="w-full py-4 lg:w-1/2 lg:pl-10 lg:py-10">
-							<h2 className="text-2xl font-semibold">
-								{data.name && data.name ? data.name : '名前なし'}
-							</h2>
+							<h2 className="text-2xl font-semibold">{data.name && data.name ? data.name : '名前なし'}</h2>
 							{data.category && (
 								<div className="flex mt-2">
 									{data.category.map((category: any, index: number) => (
-										<Link
-											key={index}
-											className="text-gray-500 mr-3"
-											to={`/category-product/${category.id}`}
-										>
+										<Link key={index} className="text-gray-500 mr-3" to={`/category-product/${category.id}`}>
 											{category.name}
 										</Link>
 									))}
@@ -175,9 +168,12 @@ export const ProductDetail: FC = () => {
 							<div className="related-items mt-8">
 								<h3 className="text-lg font-semibold text-gray-500 mb-4">レビュー</h3>
 								<div className="space-y-2">
-									{data.review && data.review.map((review: any, index: number) => (
-										<div key={index} className="border p-2 rounded">{review.comment}</div>
-									))}
+									{data.review &&
+										data.review.map((review: any, index: number) => (
+											<div key={index} className="border p-2 rounded">
+												{review.comment}
+											</div>
+										))}
 								</div>
 							</div>
 						</div>
