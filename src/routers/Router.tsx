@@ -13,6 +13,7 @@ import { Confirm } from 'pages/Confirm'
 import { Sample } from 'pages/Sample'
 import { Sample2 } from 'pages/Sample2'
 import { PaymentComplite } from 'pages/PaymentComplite'
+import { PaymentForm } from 'components/organisms/PaymentForm'
 
 export const Router = createBrowserRouter([
 	{
@@ -67,4 +68,8 @@ export const Router = createBrowserRouter([
 		path: '/sample2',
 		element: <Sample2 />
 	},
+	{
+		path: '/payment-form',
+		element: <PaymentForm />
+	}
 ])
