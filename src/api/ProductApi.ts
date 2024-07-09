@@ -1,5 +1,5 @@
 import { api } from 'lib/appClient'
-import { ResponseUser, ResponseJson } from 'types/User'
+import { ResponseJson } from 'types/User'
 
 const getAllProducts = async () => {
 	const { data } = await api.get('/api/products/list')
