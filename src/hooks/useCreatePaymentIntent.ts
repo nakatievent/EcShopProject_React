@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import * as api from 'api/PaymentApi'
 import { useQuery } from '@tanstack/react-query'
 import { Appearance, StripeElementsOptions } from '@stripe/stripe-js'
-import getStripPromise from 'lib/stripeClient'
+// import { getStripPromise } from 'lib/stripeClient'
 
-const stripePromise = getStripPromise()
+// const stripePromise = getStripPromise()
 
 export const usePaymentIntent = (total_price: number) => {
 	const [clientSecret, setClientSecret] = useState<string | undefined>()
@@ -29,5 +29,5 @@ export const usePaymentIntent = (total_price: number) => {
 		appearance
 	}
 
-	return { clientSecret, error, isLoading, appearance, options, stripePromise }
+	return { clientSecret, error, isLoading, appearance, options }
 }

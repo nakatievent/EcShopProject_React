@@ -10,7 +10,7 @@ export const Payment: FC = () => {
 	const cartContext = useContext(CartContext)
 	const { cartTotal } = cartContext
 
-	const { clientSecret, error, isLoading, appearance, options, stripePromise } = usePaymentIntent(cartTotal)
+	const { clientSecret, error, isLoading, appearance, options } = usePaymentIntent(cartTotal)
 
 	return (
 		<div>
@@ -76,11 +76,11 @@ export const Payment: FC = () => {
 				</label>
 			</div>
 
-			{showForm && clientSecret ? (
+			{/* {showForm && clientSecret ? (
 				<Elements options={options} stripe={stripePromise}>
 					<CheckoutForm />
 				</Elements>
-			) : null}
+			) : null} */}
 		</div>
 	)
 }

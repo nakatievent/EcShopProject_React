@@ -4,7 +4,6 @@ import {
 	StripeCardExpiryElementChangeEvent,
 	StripeCardNumberElementChangeEvent
 } from '@stripe/stripe-js'
-import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js'
 
 export const useStripeCardFormHooks = () => {
 	// カード情報のエラー状態を保持

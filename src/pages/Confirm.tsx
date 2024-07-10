@@ -1,6 +1,9 @@
-import React, { FC, useState } from 'react'
-import { useFetchCategoryProduct } from 'hooks/useFetchCategoryProduct'
-import { useParams, useLocation } from 'react-router-dom'
+import React, { FC, useContext, useState, MouseEvent } from 'react'
+import { useLocation } from 'react-router-dom'
+import { usePaymentIntent } from 'hooks/useCreatePaymentIntent'
+import { CartContext } from 'hooks/CartContext'
+import { useStripe, useElements } from '@stripe/react-stripe-js'
+import { Navigate } from 'react-router-dom'
 
 const mockData = {
 	name: '山田 太郎',
@@ -21,9 +24,51 @@ const mockData = {
 	total_payment: '15,730円'
 }
 
+
+
 export const Confirm: FC = () => {
+	const stripe = useStripe();
+	const elements = useElements();
+	
+	const cartContext = useContext(CartContext)
+	
+	const [navigate, setNavigate] = useState<boolean>(false)
+	
 	const { state } = useLocation()
-	console.log(state)
+	const cardData = state?.card
+	
+	const { cart, cartTotal, clearCart } = cartContext
+	
+	
+	const { clientSecret, error, isLoading, appearance, options } = usePaymentIntent(cartTotal)
+
+
+	const handlePostalCodeChange = async (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		
+		if (!stripe || !elements) {
+			return
+		}
+
+		// const stripe: Stripe | null | Promise<Stripe | null> = await getStripePromise()
+		if (stripe && clientSecret) {
+			const { paymentIntent, error } = await stripe!.confirmCardPayment(clientSecret, {
+				payment_method: state.id
+			})
+			.then(function (result: any) {
+				return result
+			})
+				
+			if (paymentIntent['status'] === "succeeded") {
+				setNavigate(true)
+				clearCart()
+			}
+		}
+	}
+	
+	if (navigate) {
+		return <Navigate to="/payment-complite" state={{ state: 'test' }} />
+	}
 
 	return (
 		<>
@@ -55,20 +100,20 @@ export const Confirm: FC = () => {
 							<label className="block text-gray-700 font-roboto">お支払い方法</label>
 							<p className="w-full px-4 py-2 rounded-md bg-white font-roboto">{mockData.payment_method}</p>
 						</div>
-						<div>
-							<label className="block text-gray-700 font-roboto">カード番号</label>
-							<p className="w-full px-4 py-2 rounded-md bg-white font-roboto">{mockData.card_number}</p>
-						</div>
-						<div>
-							<label className="block text-gray-700 font-roboto">セキュリティコード</label>
-							<p className="w-full px-4 py-2 rounded-md bg-white font-roboto">{mockData.security_code}</p>
-						</div>
-						<div>
-							<label className="block text-gray-700 font-roboto">有効期限</label>
-							<p className="w-full px-4 py-2 rounded-md bg-white font-roboto">
-								{mockData.expiration_month} / {mockData.expiration_year}
-							</p>
-						</div>
+						{cardData && (
+							<div>
+								<label className="block text-gray-700 font-roboto">カード番号</label>
+								<p className="w-full px-4 py-2 rounded-md bg-white font-roboto">{cardData.last4}</p>
+							</div>
+						)}
+						{cardData && (
+							<div>
+								<label className="block text-gray-700 font-roboto">有効期限</label>
+								<p className="w-full px-4 py-2 rounded-md bg-white font-roboto">
+									{cardData.exp_month} / {cardData.exp_year}
+								</p>
+							</div>
+						)}
 						<div>
 							<h3 className="text-gray-700 font-roboto">購入商品</h3>
 							<div className="flex items-center space-x-4 py-2">
@@ -84,14 +129,15 @@ export const Confirm: FC = () => {
 							</div>
 						</div>
 						<div className="flex justify-end">
-							{/* <h3 className="text-gray-700 font-roboto">料金</h3> */}
 							<div className="space-y-1 text-right">
 								<p className="text-gray-700 font-roboto font-bold">商品合計（税込）: {mockData.total_price}</p>
 								<p className="text-gray-700 font-roboto font-bold">送料: {mockData.shipping_fee}</p>
 								<p className="text-gray-700 font-roboto font-bold">合計（税込）: {mockData.total_payment}</p>
 							</div>
 						</div>
-						<button className="w-full text-center text-white bg-blue-500 px-4 py-2 rounded-md font-roboto">
+						<button
+							className="w-full text-center text-white bg-blue-500 px-4 py-2 rounded-md font-roboto"
+							onClick={handlePostalCodeChange}>
 							注文を確定する
 						</button>
 					</div>
