@@ -10,12 +10,12 @@ export const Hero: FC = () => {
       <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
         <div className="sm:max-w-lg">
           <h1
-            className="text-4xl font-bold tracking-tight text-blue-900 sm:text-6xl"
+            className="text-4xl font-bold tracking-tight text-white sm:text-6xl font-roboto"
             style={heroStyle['.text-outline-white']}
           >
             リゾート気分を自宅で楽しもう。
           </h1>
-          <p className="mt-4 text-xl text-gray-900" style={heroStyle['.text-outline-white']}>
+          <p className="mt-4 text-xl text-white" style={heroStyle['.text-outline-white']}>
             沖縄の商品を自宅で楽しもう。
           </p>
           <a
@@ -43,6 +43,6 @@ const heroStyle = {
 		color: 'white'
 	},
 	'.text-outline-white': {
-		textShadow: '1px 1px 2px white, -1px -1px 2px white, 1px -1px 2px white, -1px 1px 2px white'
+		textShadow: '1px 1px 1px black, -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black'
 	}
 }
