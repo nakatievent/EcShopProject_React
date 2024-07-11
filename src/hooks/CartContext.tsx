@@ -1,12 +1,6 @@
 import React, { FC, createContext, useState, ReactNode, useEffect } from 'react'
+import { Product } from 'types/Product'
 import { loadCartFromLocalStorage, saveCartToLocalStorage } from 'utils/localStorageHelpers'
-
-interface Product {
-	id: number
-	name: string
-	price: number
-	count?: number
-}
 
 interface CartContextType {
 	cart: Product[]
@@ -52,8 +46,8 @@ export const CartProvider: FC<CartProviderProps> = ({ children }) => {
 		setCart([])
 	}
 
-	// カートの合計金額（countがない時は初期値として1をセット）
-	const cartTotal = cart.reduce((total, item) => total + item.price * (item.count || 1), 0)
+	// カートの合計金額(countがない時は初期値として1をセット）
+	const cartTotal = cart.reduce((totalPrice, item) => totalPrice + item.price * (item.count || 1), 0)
 
 	return (
 		<CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal }}>
