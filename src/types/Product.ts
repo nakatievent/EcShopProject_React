@@ -3,6 +3,7 @@ interface Product {
 	name: string
 	brand: string
 	image_url: string
+	image_alt?: string
 	price: number
 	count?: number
 }

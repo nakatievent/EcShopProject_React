@@ -1,6 +1,4 @@
-import React, { useContext, memo } from 'react'
-import { api } from 'lib/appClient'
-import { useQuery } from '@tanstack/react-query'
+import { useContext, memo } from 'react'
 import { CartContext } from 'hooks/CartContext'
 
 const products = [
@@ -22,14 +20,14 @@ export const Sample = memo(() => {
 
 	return (
 		<div>
-			<h2>Products</h2>
+			{/* <h2>Products</h2>
 			{products.map((product) => (
 				<div key={product.id}>
 					<h3>{product.name}</h3>
 					<p>Price: ${product.price}</p>
 					<button onClick={() => addToCart(product)}>Add to Cart</button>
 				</div>
-			))}
+			))} */}
 		</div>
 	)
 })

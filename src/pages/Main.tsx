@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { Header } from 'components/organisms/Header'
 import { ProductList } from 'components/organisms/ProductList'
 import { CategoryList } from 'components/organisms/CategoryList'
-import { Hero } from 'components/organisms/Hero.'
+import { Hero } from 'components/organisms/Hero'
 
 export const Main: FC = () => {
 	return (

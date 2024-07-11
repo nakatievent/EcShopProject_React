@@ -1,8 +1,4 @@
 import React, { useContext, memo } from 'react'
-import { api } from 'lib/appClient'
-import { useQuery } from '@tanstack/react-query'
-import { CartContext } from 'hooks/CartContext'
-
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { PaymentForm } from 'components/organisms/PaymentForm'
