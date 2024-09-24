@@ -1,17 +1,12 @@
-import React, { FC, useEffect, useState, FormEvent } from 'react'
-import * as api from 'api/CategoryApi'
-import { useQuery } from '@tanstack/react-query'
+import React, { FC } from 'react'
+import { Category } from 'types/Category'
 import { useFetchCategoryList } from 'hooks/useFetchCategoryList'
 
 export const CategoryList: FC = () => {
-	const { data, error, isError, isLoading, isFetched } = useFetchCategoryList()
-
-	if (isLoading) {
-		return <span>Loading...</span>
-	}
-
-	if (error) {
-		return <span>Error: {error.message}</span>
+	const { data, error, isLoading } = useFetchCategoryList()
+	
+	if (error || isLoading) {
+		return <span>{error ?`Error: ${error.message}` : 'Loading...'}</span>
 	}
 
 	return (
@@ -20,7 +15,7 @@ export const CategoryList: FC = () => {
 				<h1 className="text-lg font-bold mb-4">カテゴリーリスト</h1>
 				<ul className="space-y-2">
 					{data &&
-						data.map((item: any) => (
+						data.map((item: Category) => (
 							<a href={`/category-product/${item.id}`} key={item.id}>
 								<li className="text-sm mt-2 text-gray-500 hover:text-gray-700 hover:underline">{item.name}</li>
 							</a>

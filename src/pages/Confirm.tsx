@@ -48,8 +48,7 @@ export const Confirm: FC = () => {
 
 		// const stripe: Stripe | null | Promise<Stripe | null> = await getStripePromise()
 		if (stripe && clientSecret) {
-			const { paymentIntent, error } = await stripe!
-				.confirmCardPayment(clientSecret, {
+			const { paymentIntent, error } = await stripe!.confirmCardPayment(clientSecret, {
 					payment_method: state.id
 				})
 				.then(function (result: any) {

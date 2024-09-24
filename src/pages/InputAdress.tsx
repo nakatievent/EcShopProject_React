@@ -20,9 +20,10 @@ export const InputAdress: FC = () => {
 		formState: { errors }
 	} = useForm<InputAdressForm>()
 
-	const handlePostalCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const code = e.target.value
-		setPostalCode(e.target.value)
+	const handlePostalCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const code = event.target.value
+		setPostalCode(code)
+
 		if (code.length === 7) {
 			fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${code}`)
 				.then((response) => response.json())
@@ -49,7 +50,7 @@ export const InputAdress: FC = () => {
 	return (
 		<div className="flex items-center justify-center min-h-screen bg-[#f2f2f2] text-gray-800 font-roboto">
 			<div className="my-5 w-full max-w-[760px] p-8 bg-white rounded-3xl shadow-xl">
-				<h2 className="text-center mb-6 text-2xl font-bold text-[#2c3e50]">注文情報を入力してください</h2>
+				<h2 className="text-center mb-6 text-lg lg:text-2xl font-bold text-[#2c3e50]">注文情報を入力してください</h2>
 				<form className="space-y-6" method="POST" onSubmit={handleSubmit(onSubmit)}>
 					<div className="grid grid-cols-1 gap-2">
 						<label className="flex items-center text-[#2c3e50]">お名前</label>
@@ -111,7 +112,6 @@ export const InputAdress: FC = () => {
 							className="bg-white border border-gray-300 p-3 rounded-md"
 							type="text"
 							{...register('address', {
-								required: '必須項目です',
 								maxLength: {
 									value: 255,
 									message: '最大255文字です'
@@ -147,7 +147,6 @@ export const InputAdress: FC = () => {
 					<div className="grid grid-cols-1 gap-2">
 						<label className="flex items-center text-[#2c3e50]">メールアドレス</label>
 						<input
-							// name="email"
 							className="bg-white border border-gray-300 p-3 rounded-md"
 							type="email"
 							placeholder="例: example@example.com"
@@ -189,17 +188,18 @@ export const InputAdress: FC = () => {
 						{errors.confirmEmail && <span className="text-red-500 text-sm">{errors.confirmEmail.message}</span>}
 					</div>
 					<div>
-						<div className="border-t border-gray-300 my-6"></div>
-						<div className="grid grid-cols-1 gap-2">
-							<label className="flex items-center text-[#2c3e50]">購入商品</label>
-							<div className="flex justify-between items-center">
-								<img src="brand.png" alt="購入商品の画像" className="w-[70px] h-[70px] object-cover rounded-md" />
-								<div className="text-right text-[#565656]">
-									<p className="text-sm">商品名: 商品A</p>
-									<p className="text-sm">個数: 1</p>
+						<label className="flex items-center text-[#2c3e50]">購入商品</label>
+						{cart.map((product: any) => (
+							<div key={product.id} className="grid grid-cols-1 gap-2 mt-3">
+								<div className="flex justify-between items-center">
+									<img src={product.image_url} alt="購入商品の画像" className="w-[70px] h-[70px] object-cover rounded-md" />
+									<div className="text-right text-[#565656]">
+										<p className="text-sm">商品名: {product.name}</p>
+										<p className="text-sm">個数: {product.count || 1}</p>
+									</div>
 								</div>
 							</div>
-						</div>
+						))}
 					</div>
 					<div>
 						<div className="border-t border-gray-300 my-6"></div>
@@ -214,7 +214,7 @@ export const InputAdress: FC = () => {
 							type="submit"
 							className="w-full bg-[#4a90e2] text-white px-6 py-3 rounded-md hover:bg-[#357ABD] transition-all duration-200"
 						>
-							同意して注文完了する
+							決済情報選択画面へ進む
 						</button>
 					</div>
 				</form>

@@ -59,15 +59,12 @@ const product = {
 export const ProductDetail: FC = () => {
 	const navigate = useNavigate()
 	const [count, setCount] = useState<number>(0)
-	const { data, error, isError, isLoading, isFetched } = useFetchProductDetail()
 	const cartContext = useContext(CartContext)
+	const { data, error, isLoading, isFetched } = useFetchProductDetail()
 
-	if (!cartContext) {
-		throw new Error('CartContext not found')
-	}
+	console.log(data)
 
 	const { addToCart } = cartContext
-	// const { cartTotal } = cartContext;
 
 	if (isLoading) {
 		return <span></span>
@@ -77,14 +74,12 @@ export const ProductDetail: FC = () => {
 		return <span>Error: {error.message}</span>
 	}
 
-	if (isFetched) {
-		// console.log(data)
-	}
-
 	const onClickButton = () => {
 		addToCart({
 			id: data.id,
 			name: data.name,
+			brand: data.brand.name,
+			image_url: data.image[0].image_url,
 			price: data.price
 		})
 		navigate('/cart')
@@ -110,8 +105,9 @@ export const ProductDetail: FC = () => {
 								</div>
 							</div>
 						</div>
-						<div className="w-full py-4 lg:w-1/2 lg:pl-10 lg:py-10">
-							<h2 className="text-2xl font-semibold">{data.name && data.name ? data.name : '名前なし'}</h2>
+						<div className="w-full pt-5 lg:pt-0 lg:w-1/2 lg:pl-10">
+							<h2 className="text-2xl font-semibold">{data.name ? data.name : '名前なし'}</h2>
+							<p className="text-basic mt-3 font-semibold">{data.brand ? data.brand.name : '名前なし'}</p>
 							{data.category && (
 								<div className="flex mt-2">
 									{data.category.map((category: any, index: number) => (
@@ -122,17 +118,17 @@ export const ProductDetail: FC = () => {
 								</div>
 							)}
 							<div className="flex items-center mt-2 text-sm text-gray-500">
-								<span>評価: ★★★★☆</span>
+								<span>評価: {'★'.repeat(data.rating)}{'☆'.repeat(5 - data.rating)}</span>
 								<span className="ml-2">お気に入り: {data.favorite}人</span>
 							</div>
-							<p className="font-bold mt-2 text-gray-500">金額: {data.price.toLocaleString()}円</p>
+							<p className="text-lg font-bold mt-2 text-gray-700">金額: {data.price.toLocaleString()}円</p>
 							<p className="text-gray-500 mt-2">送料無料</p>
-							<input
+							{/* <input
 								type="number"
 								className="border border-gray-300 p-2 mt-2 w-full"
 								placeholder="数量"
 								onChange={(e) => setCount(Number(e.target.value))}
-							/>
+							/> */}
 							<button
 								className="border border-gray-500 text-black px-4 py-2 rounded-md mt-4 w-full"
 								// onClick={onClickButton}
@@ -144,7 +140,7 @@ export const ProductDetail: FC = () => {
 							<button className="border border-gray-500 text-gray-500 px-4 py-2 rounded-md mt-4 w-full">
 								お気に入りに登録
 							</button>
-							<p className="text-gray-500 mt-4">在庫あり</p>
+							<p className="text-gray-500 mt-4">{data.stock > 0 ? '在庫あり' : '在庫なし'}</p>
 							<div>
 								<h3 className="mt-5 text-md font-bold tracking-tight text-gray-900 sm:text-lg">商品説明</h3>
 								<div className="mt-3 space-y-6 bg-gray-100 p-4 rounded-md">

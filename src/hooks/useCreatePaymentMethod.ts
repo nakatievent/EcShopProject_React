@@ -5,43 +5,43 @@ const useCreatePaymentMethod = () => {
 	const stripe = useStripe()
 	const elements = useElements()
 
-	const [paymentMethod, setPaymentMethod] = useState<object|undefined>(undefined)
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState<boolean>(false)
+	const [paymentMethod, setPaymentMethod] = useState<object | undefined>(undefined)
 
-  const createPaymentMethod = useCallback(async () => {
-    if (!stripe || !elements) {
-      return;
-    }
+	const createPaymentMethod = useCallback(async () => {
+		if (!stripe || !elements) {
+			return
+		}
 
-    const cardElement = elements.getElement(CardNumberElement);
+		const cardElement = elements.getElement(CardNumberElement)
 
-    if (!cardElement) {
-      // setError(new Error('Card element not found'));
-      return;
-    }
+		if (!cardElement) {
+			// setError(new Error('Card element not found'));
+			return
+		}
 
-    setLoading(true);
-    setError(null);
+		setLoading(true)
+		setError(null)
 
-    try {
-      const { paymentMethod, error } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement,
-      });
+		try {
+			const { paymentMethod, error } = await stripe.createPaymentMethod({
+				type: 'card',
+				card: cardElement
+			})
 
-      if (error) {
-        // setError(error);
-        // setPaymentMethod(null);
-      } else {
-        setPaymentMethod(paymentMethod);
-      }
-    } catch (err) {
-      // setError(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [stripe, elements]);
+			if (error) {
+				// setError(error);
+				// setPaymentMethod(null);
+			} else {
+				setPaymentMethod(paymentMethod)
+			}
+		} catch (err) {
+			// setError(err);
+		} finally {
+			setLoading(false)
+		}
+	}, [stripe, elements])
 
 	return { createPaymentMethod, paymentMethod, error, loading }
 }

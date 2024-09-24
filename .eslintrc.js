@@ -1,64 +1,38 @@
 // module.exports = {
-//   env: {
-//     browser: true,
-//     es2022: true,
-//   },
-//   extends: [
-//     'plugin:react/recommended',
-//     'plugin:@typescript-eslint/recommended',
-//     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-//     'prettier',
-//   ],
-//   parser: '@typescript-eslint/parser',
-//   parserOptions: {
-//     ecmaFeatures: {
-//       jsx: true,
-//     },
-//     ecmaVersion: 13,
-//     sourceType: 'module',
-//     tsconfigRootDir: __dirname,
-//     project: ['./tsconfig.json'],
-//   },
-//   plugins: [
-//     'react',
-//     '@typescript-eslint',
-//   ],
-//   "ignorePatterns": [
-//     ".eslintrc.js"
-//   ],
-//   rules: {
-//     'no-use-before-define': "off",
-//     "@typescript-eslint/no-use-before-define": "off",
-//     'import/prefer-default-export': "off",
-//     'import/extensions': [
-//         'error',
-//         {
-//           js: 'never',
-//           jsx: 'never',
-//           ts: 'never',
-//           tsx: 'never',
-//         },
-//       ],
-//       'react/jsx-filename-extension': [
-//         'error',
-//         {
-//           extensions: ['.jsx', '.tsx'],
-//         },
-//       ],
-//       'react/react-in-jsx-scope': 'off',
-//       'no-void': [
-//         'error',
-//         {
-//           allowAsStatement: true,
-//         },
-//       ],
-//   },
-//   settings: {
-//     'import/resolver': {
-//       node: {
-//         paths: ['src'],
-//         extensions: ['.js', '.jsx', '.ts', '.tsx']
-//       },
-//     },
-//   },
-//  };
+// 	env: {
+// 		browser: true,
+// 		es2021: true,
+// 		node: true
+// 	},
+// 	extends: [
+// 		'eslint:recommended',
+// 		'plugin:react/recommended',
+// 		'plugin:@typescript-eslint/recommended',
+// 		'plugin:prettier/recommended'
+// 	],
+// 	parser: '@typescript-eslint/parser',
+// 	parserOptions: {
+// 		ecmaFeatures: {
+// 			jsx: true
+// 		},
+// 		ecmaVersion: 'latest',
+// 		sourceType: 'module'
+// 	},
+// 	plugins: ['react', '@typescript-eslint'],
+// 	rules: {
+// 		'prettier/prettier': ['error', { singleQuote: true, semi: false }],
+// 		'@typescript-eslint/type-annotation-spacing': ['error', { before: false, after: true }],
+// 		'@typescript-eslint/no-unused-vars': 'warn',
+// 		'react/prop-types': 'off',
+// 		'no-console': 'warn',
+// 		'no-debugger': 'warn',
+// 		'react/jsx-uses-react': 'off',
+// 		'react/react-in-jsx-scope': 'off',
+// 		'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }]
+// 	},
+// 	settings: {
+// 		react: {
+// 			version: 'detect'
+// 		}
+// 	}
+// }

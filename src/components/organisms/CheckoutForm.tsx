@@ -1,29 +1,21 @@
 import React, { useState, useEffect, FormEvent } from 'react'
 import { Navigate } from 'react-router-dom'
-import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js'
+import { useStripe, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js'
 import { useStripeCardFormHooks } from 'hooks/useStripeCardFormHooks'
 import useCreatePaymentMethod from 'hooks/useCreatePaymentMethod'
 
 export default function CheckoutForm() {
 	const stripe = useStripe()
-	const elements = useElements()
 
 	const [navigate, setNavigate] = useState<boolean>(false)
 	const [cardData, setCardData] = useState<object | undefined>(undefined)
 	const [selectPaymentMethod, setSelectPaymentMethod] = useState<string>('creditCard')
 
 	// カードの入力情報をバリデーションするHooks
-	const {
-		cardState,
-		onChangeCardNumberElement,
-		onChangeCardExpiryElement,
-		onChangeCardCvcElement,
-		cardElementStyle
-	} = useStripeCardFormHooks()
+	const { cardState, onChangeCardNumberElement, onChangeCardExpiryElement, onChangeCardCvcElement, cardElementStyle } = useStripeCardFormHooks()
 
 	// paymentMethodoを作成するHooks
-	const { createPaymentMethod, paymentMethod, error, loading } = useCreatePaymentMethod();
-
+	const { createPaymentMethod, paymentMethod, error, loading } = useCreatePaymentMethod()
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -33,22 +25,23 @@ export default function CheckoutForm() {
 			case 'cashOnDelivery':
 				await setNavigate(true)
 				break
+
 			// クレジットカード決済
 			case 'creditCard':
-				await createPaymentMethod();
+				await createPaymentMethod()
 				break
 		}
 	}
 
 	useEffect(() => {
 		if (paymentMethod) {
-			setCardData(paymentMethod);
-			setNavigate(true);
+			setCardData(paymentMethod)
+			setNavigate(true)
 		}
-	}, [paymentMethod]);
+	}, [paymentMethod])
 
 	if (navigate) {
-		return <Navigate to="/confirm" state={cardData || 'test'} />;
+		return <Navigate to="/confirm" state={cardData || 'test'} />
 	}
 
 	return (
@@ -87,6 +80,8 @@ export default function CheckoutForm() {
 					</label>
 				</div>
 			</div>
+
+			{/* クレジットカード決済の場合 */}
 			{selectPaymentMethod === 'creditCard' && (
 				<>
 					<div className="form-group mb-4">
@@ -126,14 +121,16 @@ export default function CheckoutForm() {
 					</div>
 				</>
 			)}
+
+			{/* 代金引換の場合 */}
 			{selectPaymentMethod === 'cashOnDelivery' && (
-				<div className="mb-6 text-gray-700 text-sm font-roboto">配送時に現金でお支払いください。</div>
+				<div className="mb-6 text-red-500 text-sm font-roboto">配送時に現金でお支払いください。</div>
 			)}
 			<button
-				className={`w-full py-2 px-4 rounded ${stripe ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
+				className="w-full py-2 px-4 rounded bg-blue-500 hover:bg-blue-700 text-white"
 				disabled={!stripe}
 			>
-				Submit
+				決済方法を確定する
 			</button>
 		</form>
 	)
